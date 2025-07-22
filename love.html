@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Jea</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+
+        .loading-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4a8fe7;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(216, 27, 96, 0.5);
+        }
+
+        .loading-bar {
+            width: 60%;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background-color: #4a8fe7;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        #main-content {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #333;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: #4a8fe7;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            font-style: italic;
+        }
+
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            height: 600px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            border: 2px solid #333;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.02);
+        }
+
+        .love-messages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .message-card {
+            background-color: #1e1e1e;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #3a7bd5;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+            background-color: #252525;
+        }
+
+        .message-card h3 {
+            color: #4a8fe7;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .message-card p {
+            line-height: 1.6;
+            color: #b0b0b0;
+        }
+
+        .music-player {
+            background-color: #1e1e1e;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 3rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-title {
+            color: #4a8fe7;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        button {
+            background-color: #4a8fe7;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 10px;
+        }
+
+        button:hover {
+            background-color: #3a7bd5;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #333;
+            color: #666;
+        }
+
+        /* Fade-out effect */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-container {
+            margin-top: 2rem;
+            text-align: center;
+            color: #e0e0e0;
+        }
+
+        .question-container h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-container button {
+            margin: 0 10px;
+            padding: 1rem 2rem;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-disabled {
+            cursor: not-allowed;
+            background-color: #ccc;
+        }
+
+        #music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        #music-controls button {
+            background: rgba(93, 114, 232, 0.9);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        #music-controls button:hover {
+            background: #3c77c5;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .loading-text {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-text">I love you Jea</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loading-progress"></div>
+        </div>
+    </div>
+
+    <audio id="love-song" loop>
+        <source src="Perfect.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Main Content -->
+    <div id="main-content" class="page active-page">
+        <header>
+            <h1>For You, Jea</h1>
+            <p class="subtitle">Every moment with you feels like destiny</p>
+        </header>
+
+        <section class="hero-section">
+            <img src="pict.png" alt="Jea and Jo" class="hero-image">
+        </section>
+
+        <section class="love-messages">
+            <div class="message-card">
+                <h3>Our First Meeting</h3>
+                <p>I saw you once through words and light and something in me reached out long before I understood why.</p>
+            </div>
+
+            <div class="message-card">
+                <h3>My Peace</h3>
+                <p>In your embrace, I find solace no words can describe. Your presence alone calms the storms in my soul.</p>
+            </div>
+
+            <div class="message-card">
+                <h3>100 Reasons Why I Love You</h3>
+                <p>I could name a hundred but they would all circle back to this because loving you feels like home and no reason will ever feel more true than that.</p>
+            </div>
+
+            <div class="message-card">
+                <h3>My Vow</h3>
+                <p>I will choose you in quiet moments and storms alike even when the world feels too much or too far.</p>
+            </div>
+
+            <div class="message-card">
+                <h3>Every Version of You</h3>
+                <pa>I love you when you're at your best and I still love you when you're not.</pa>
+            </div>
+
+            <div class="message-card">
+                <h3>My Universe</h3>
+                <p>You're my compass, my anchor, my light in the darkness, and my reason for being.</p>
+            </div>
+        </section>
+
+        <!-- Question Section -->
+        <section class="question-container">
+            <h3>Will you be my boyfriend?</h3>
+            <div class="btn-container">
+                <!-- Form with Formspree endpoint for "Yes" -->
+                <form action="https://formspree.io/f/xqalpzlg" method="POST">
+                    <input type="hidden" name="answer" value="Yes, I will!">
+                    <button type="submit">Yes, I will!</button>
+                </form>
+
+                <!-- Form with Formspree endpoint for "No" and make it disabled -->
+                <form>
+                    <button type="button" class="btn-disabled" disabled>No!</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <p>Made with love by <a href="https://t.me/tyrantt">Jonathan Kentigern</a> for <a href="https://t.me/nquansa">Jèavaleria Loeviènt</a></p>
+        </footer>
+
+        <div id="music-controls" style="display:none;">
+            <button id="music-toggle">⏸ Pause</button>
+        </div>
+
+    </div>
+
+    <script>
+    const loadingProgress = document.getElementById('loading-progress');
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    const music = document.getElementById('love-song');
+    const toggleBtn = document.getElementById('music-toggle');
+    const musicControls = document.getElementById('music-controls');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        loadingProgress.style.width = `${progress}%`;
+
+        if (progress >= 100) {
+        clearInterval(interval);
+        loadingScreen.style.opacity = 0;
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+
+            // Aktifkan musik saat klik pertama
+            const startMusic = () => {
+            music.volume = 0.6;
+            music.play().then(() => {
+                toggleBtn.textContent = '⏸ Pause';
+                musicControls.style.display = 'block';
+            }).catch(err => console.log("Autoplay failed:", err));
+            document.removeEventListener('click', startMusic);
+            };
+            document.addEventListener('click', startMusic);
+        }, 1000);
+        }
+    }, 300);
+
+    // Toggle music play/pause
+    toggleBtn.addEventListener('click', () => {
+        if (music.paused) {
+        music.play();
+        toggleBtn.textContent = '⏸ Pause';
+        } else {
+        music.pause();
+        toggleBtn.textContent = '▶️ Play';
+        }
+    });
+    </script>
+</body>
+</html>
